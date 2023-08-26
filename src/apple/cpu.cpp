@@ -22,13 +22,13 @@
 namespace hwinfo {
 
 // _____________________________________________________________________________________________________________________
-int CPU::currentClockSpeed_MHz() {
+int64_t CPU::currentClockSpeed_MHz() const {
   // TODO: implement
   return -1;
 }
 
 // _____________________________________________________________________________________________________________________
-std::string CPU::vendor() {
+const std::string& CPU::vendor() const {
 #if defined(HWINFO_X86)
   std::string vendor;
   uint32_t regs[4]{0};
@@ -44,7 +44,7 @@ std::string CPU::vendor() {
 }
 
 // _____________________________________________________________________________________________________________________
-std::string CPU::modelName() {
+const std::string& CPU::modelName() const {
 #if defined(HWINFO_X86)
   std::string model;
   uint32_t regs[4]{};
@@ -85,7 +85,7 @@ std::string CPU::modelName() {
 }
 
 // _____________________________________________________________________________________________________________________
-int CPU::numPhysicalCores() {
+int CPU::numPhysicalCores() const {
 #if defined(HWINFO_X86)
   uint32_t regs[4]{};
   std::string vendorId = getVendor();
@@ -139,7 +139,7 @@ int CPU::numPhysicalCores() {
 }
 
 // _____________________________________________________________________________________________________________________
-int CPU::numLogicalCores() {
+int CPU::numLogicalCores() const {
 #if defined(HWINFO_X86)
   std::string vendorId = getVendor();
   std::for_each(vendorId.begin(), vendorId.end(), [](char& in) { in = ::toupper(in); });
@@ -176,7 +176,7 @@ int CPU::numLogicalCores() {
 }
 
 // _____________________________________________________________________________________________________________________
-int CPU::maxClockSpeed_MHz() {
+int64_t CPU::maxClockSpeed_MHz() const {
   long speed = 0;
   size_t speed_size = sizeof(speed);
   if (sysctlbyname("hw.cpufrequency", &speed, &speed_size, nullptr, 0) != 0) {
@@ -186,7 +186,7 @@ int CPU::maxClockSpeed_MHz() {
 }
 
 // _____________________________________________________________________________________________________________________
-int CPU::regularClockSpeed_MHz() {
+int64_t CPU::regularClockSpeed_MHz() const {
   uint64_t frequency = 0;
   size_t size = sizeof(frequency);
   if (sysctlbyname("hw.cpufrequency", &frequency, &size, nullptr, 0) == 0) {
@@ -195,7 +195,7 @@ int CPU::regularClockSpeed_MHz() {
   return -1;
 }
 
-int CPU::cacheSize_Bytes() { return -1; }
+int64_t CPU::cacheSize_Bytes() const { return -1; }
 
 // =====================================================================================================================
 // _____________________________________________________________________________________________________________________
